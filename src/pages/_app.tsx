@@ -1,33 +1,18 @@
 import ErrorPageContent from "@/components/ErrorPageContent";
 import Layout from "@/components/Layout";
 import type { AppProps } from "next/app";
-import stringsEn from "@/strings/stringsEn";
-import stringsVi from "@/strings/stringsVi";
-import { useRouter } from "next/router";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { AppContextType, AppProvider } from "@/context/AppContext";
-import { useEffect } from "react";
-import routeLinks from "@/routeLinks";
+import { AppState, AppProvider } from "@/context/AppContext";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-
-  const localeInfo = router.asPath.slice(1, 3);
-
-  const localeStrings = localeInfo === "vi" ? stringsVi : stringsEn;
-
-  const initialContextValue: AppContextType = {
-    strings: localeStrings,
-    lang: localeInfo === "vi" ? "vi" : "en",
-    darkmode: false,
+  const initialContextValue: AppState = {
+    token: null,
+    playlists: [],
+    userInfo: null,
+    selectedPlaylistId: "",
+    selectedPlaylist: null,
+    playing: null,
+    playerState: false,
   };
-
-  useEffect(() => {
-    AOS.init({
-      duration: 600,
-    });
-  }, []);
 
   if (pageProps.error) {
     return (
